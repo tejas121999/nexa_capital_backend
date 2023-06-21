@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // sync all the tables
-sequelize.sync({ force: true }).then((res) => {
+sequelize.sync().then(() => {
     console.log("table is sync")
 })
 

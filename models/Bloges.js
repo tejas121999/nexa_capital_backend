@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         blog_body: {
             type: DataTypes.STRING,
-            field: 'blog_desc'
+            field: 'blog_body'
         },
         isApprove: {
             type: DataTypes.STRING,

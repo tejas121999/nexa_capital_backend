@@ -1,6 +1,8 @@
 const app = require("./index")
-const port = 5000
+const PORT = process.env.NODE_PORT || 5000
+console.log(PORT)
+console.log("my name", process.env.my_name)
 
-app.listen(port, () => {
-    console.log(`Example app listening at port http://localhost:${port}`)
+app.listen(PORT, () => {
+    console.log(`Example app listening at port http://localhost:${PORT}`)
 })

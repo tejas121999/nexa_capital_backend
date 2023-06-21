@@ -2,7 +2,13 @@ const { Property } = require('../models')
 
 exports.getAllProperty = async (req, res) => {
     try {
-        var getAll = await Property.findAll()
+        var getAll = await Property.findAndCountAll({
+            where: {
+                isDelete: false
+            },
+            limit: req.body.limit,
+            offset: req.body.offset
+        })
         if (!getAll) {
             return res.status(404).json({
                 message: "Data not found"
@@ -69,8 +75,8 @@ exports.updateProperty = async (req, res) => {
 
 exports.deleteProperty = async (req, res) => {
     try {
-        const prop_id = req.body
-        const data = await Property.findOne({ where: { id: prop_id } })
+        const prop_id = req.body.id
+        const data = await Property.findAll({ where: { id: prop_id } })
         if (!data) {
             return res.status(404).json({
                 message: "post not found"
@@ -80,7 +86,7 @@ exports.deleteProperty = async (req, res) => {
                 isDelete: true
             }, {
                 where: {
-                    id: prop_id
+                    id: req.body.id
                 }
             }).then((_) => {
                 res.status(200).send({

@@ -2,7 +2,13 @@ const { Bloges } = require('../models')
 
 exports.getAllBlogs = async (req, res) => {
     try {
-        var getAllBlog = await Bloges.findAll()
+        var getAllBlog = await Bloges.findAndCountAll({
+            where: {
+                isDelete: false
+            },
+            limit: req.body.limit,
+            offset: req.body.offset
+        })
         if (!getAllBlog) {
             return res.status(404).json({
                 message: "Something went wrong"
@@ -32,10 +38,11 @@ exports.addBlog = async (req, res) => {
         } else {
             return res.status(200).json({
                 message: "created",
-                create_post
+                createBlog
             })
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error
@@ -59,6 +66,7 @@ exports.updateBlog = async (req, res) => {
             updateBlog
         })
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error
@@ -68,27 +76,29 @@ exports.updateBlog = async (req, res) => {
 
 exports.deleteBlog = async (req, res) => {
     try {
-        const blog_id = req.body
-        const data = await Bloges.findOne({ where: { id: blog_id } })
+        const { blog } = req.body
+        const data = await Bloges.findOne({ where: { id: blog.id } })
         if (!data) {
             return res.status(404).json({
                 message: "post not found"
             })
         } else {
-            Bloges.update({
-                isDelete: true
-            }, {
+            console.log("blog")
+            Bloges.update(blog.isDelete, {
                 where: {
-                    id: blog_id
+                    id: blog.id
                 }
             }).then((_) => {
-                res.status(200).send({
-                    message: "Delete",
-                    // data
+                return res.status(200).send({
+                    message: "delete blog"
                 })
+            }).catch((error) => {
+                console.log(error)
             })
+
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error

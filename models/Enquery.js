@@ -16,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         contact_no: {
             type: DataTypes.STRING,
-            field: 'password'
+            field: 'contact_no'
         },
         location: {
             type: DataTypes.STRING,
-            field: 'password'
+            field: 'location'
         },
         description: {
             type: DataTypes.STRING,

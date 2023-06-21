@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         facility: {
             type: DataTypes.STRING,
             field: 'facuility'
+        },
+        isDelete: {
+            type: DataTypes.BOOLEAN,
+            field: 'isDelete',
+            defaultValue: false,
         }
     }, {
         sequelize,

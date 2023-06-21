@@ -2,9 +2,14 @@ const { Enquery } = require('../models')
 
 exports.getAllenquery = async (req, res) => {
     try {
-        var getAllEnquery = await Enquery.findAll()
-        if (!getAllEnquery
-        ) {
+        var getAllEnquery = await Enquery.findAndCountAll({
+            where: {
+                isDelete: false
+            },
+            limit: req.body.limit,
+            offset: req.body.offset
+        })
+        if (!getAllEnquery) {
             return res.status(404).json({
                 message: "Something went wrong"
             })
@@ -70,18 +75,18 @@ exports.updateEnq = async (req, res) => {
 
 exports.deleteEnqs = async (req, res) => {
     try {
-        const enq_id = req.body
+        const enq_id = req.body.id
         const data = await Enquery.findOne({ where: { id: enq_id } })
         if (!data) {
             return res.status(404).json({
                 message: "post not found"
             })
         } else {
-            Bloges.update({
+            Enquery.update({
                 isDelete: true
             }, {
                 where: {
-                    id: enq_id
+                    id: req.body.id
                 }
             }).then((_) => {
                 res.status(200).send({
@@ -91,6 +96,7 @@ exports.deleteEnqs = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error

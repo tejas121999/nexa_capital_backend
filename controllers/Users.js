@@ -78,7 +78,13 @@ exports.login = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        var getUser = await Users.findAll()
+        var getUser = await Users.findAndCountAll({
+            where: {
+                isDelete: false
+            },
+            limit: req.body.limit,
+            offset: req.body.offset
+        })
         if (!getUser) {
             return res.status(404).json({
                 message: "Data not found"
