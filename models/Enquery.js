@@ -2,7 +2,12 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class Enquery extends Model {
-
+        static associate(models) {
+            Enquery.belongsTo(models.Property, {
+                foreignKey: "property_id",
+                as: 'prop_data'
+            })
+        }
     }
 
     Enquery.init({

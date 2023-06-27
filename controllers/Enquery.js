@@ -1,4 +1,5 @@
 const { Enquery } = require('../models')
+const model = require('../models')
 
 exports.getAllenquery = async (req, res) => {
     try {
@@ -7,7 +8,13 @@ exports.getAllenquery = async (req, res) => {
                 isDelete: false
             },
             limit: req.body.limit,
-            offset: req.body.offset
+            offset: req.body.offset,
+            include: [
+                {
+                    model: model.Property,
+                    as: 'prop_data'
+                }
+            ]
         })
         if (!getAllEnquery) {
             return res.status(404).json({

@@ -22,31 +22,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             field: 'contact_no'
         },
-        isAdmin: {
-            type: DataTypes.BOOLEAN,
-            field: 'isAdmin',
-            defaultValue: false,
-        },
-        isBlogger: {
-            type: DataTypes.BOOLEAN,
-            field: 'isBlogger',
-            defaultValue: false,
-        },
-        isProperty: {
-            type: DataTypes.BOOLEAN,
-            field: 'isProperty',
-            defaultValue: false,
-        },
-        // lead generator
-        isLg: {
-            type: DataTypes.BOOLEAN,
-            field: 'isLg',
-            defaultValue: false,
-        },
-        isTl: {
-            type: DataTypes.BOOLEAN,
-            field: 'isTl',
-            defaultValue: false
+        user_type: {
+            type: DataTypes.STRING,
+            field: 'user_type'
         },
         isDelete: {
             type: DataTypes.BOOLEAN,

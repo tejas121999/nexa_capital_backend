@@ -2,10 +2,18 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class Property extends Model {
-
+        static associate(models) {
+            Property.hasOne(models.Enquery, {
+                foreignKey: "property_id",
+            })
+        }
     }
 
     Property.init({
+        property_name: {
+            type: DataTypes.STRING,
+            field: 'property_name'
+        },
         property_address: {
             type: DataTypes.STRING,
             field: 'property_address'
