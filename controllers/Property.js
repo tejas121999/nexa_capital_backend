@@ -1,4 +1,4 @@
-const { Property } = require('../models')
+const { Property, PropertyIMG } = require('../models')
 
 exports.getAllProperty = async (req, res) => {
     try {
@@ -93,6 +93,39 @@ exports.deleteProperty = async (req, res) => {
                     message: "Delete",
                     // data
                 })
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Server Error",
+            error
+        })
+    }
+}
+
+exports.uploadImg = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id)
+        var file = req.files
+
+        var propertyArray = []
+
+        file.map((fileName) => {
+            var temp = {
+                "prop_id": id,
+                "property_img": fileName.filename
+            }
+            propertyArray.push(temp)
+        })
+        
+        var upload_img = await PropertyIMG.bulkCreate(propertyArray)
+        if (upload_img) {
+            return res.status(200).json({
+                message: "Image upload success"
+            })
+        } else { 
+            return res.status(400).json({
+                message: "failed to upload"
             })
         }
     } catch (error) {

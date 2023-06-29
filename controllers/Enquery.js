@@ -110,3 +110,27 @@ exports.deleteEnqs = async (req, res) => {
         })
     }
 }
+
+exports.assignTo = async (req, res) => {
+    try {
+        const { enq_id, assign_to } = req.body
+        var assign_enq = await Enquery.update({
+            assignTo: assign_to
+        },
+            {
+                where: {
+                    id: enq_id
+                }
+            }
+        )
+        return res.status(200).send({
+            message: "assign successfully",
+            assign_enq
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "Server Error",
+            error
+        })
+    }
+}

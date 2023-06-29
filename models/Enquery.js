@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
         status: {
             type: DataTypes.INTEGER,
             field: 'status'
+        },
+        assignTo: {
+            type: DataTypes.INTEGER,
+            field: 'assignTo'
         }
     }, {
         sequelize,
