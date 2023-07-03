@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+app.use("/uploades", express.static("uploades"))
 
 // sync all the tables
 sequelize.sync().then(() => {

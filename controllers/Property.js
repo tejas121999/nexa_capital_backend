@@ -107,23 +107,23 @@ exports.uploadImg = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
         var file = req.files
-
+        console.log("===", file)
         var propertyArray = []
 
         file.map((fileName) => {
             var temp = {
                 "prop_id": id,
-                "property_img": fileName.filename
+                "property_img": fileName.path
             }
             propertyArray.push(temp)
         })
-        
+
         var upload_img = await PropertyIMG.bulkCreate(propertyArray)
         if (upload_img) {
             return res.status(200).json({
                 message: "Image upload success"
             })
-        } else { 
+        } else {
             return res.status(400).json({
                 message: "failed to upload"
             })
@@ -135,3 +135,23 @@ exports.uploadImg = async (req, res) => {
         })
     }
 }
+
+exports.getPropertyImg = async (req, res) => {
+    try {
+        const data = await PropertyIMG.findAll({ where: { prop_id: req.body.prop_id } })
+        if (!data) {
+            return res.status(404).json({
+                message: "img not found"
+            })
+        } else {
+            res.status(200).send({
+                message: "Prop IMG",
+                data
+            })
+        }
+    } catch (error) {
+
+    }
+}
+
+

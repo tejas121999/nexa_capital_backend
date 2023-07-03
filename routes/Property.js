@@ -13,5 +13,6 @@ router.post('/upload/:id',
     property_img.upload.array('property'),
     propertyControler.uploadImg
 )
+router.post('/getImg', verify.validateToken, propertyControler.getPropertyImg)
 
 module.exports = router
