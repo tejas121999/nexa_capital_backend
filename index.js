@@ -22,5 +22,9 @@ sequelize.sync().then(() => {
 
 app.use('/api', routes)
 
+app.get('/get', async (req, res) => {
+    return res.status(200).json({ msg: "working success" });
+})
+
 
 module.exports = app
