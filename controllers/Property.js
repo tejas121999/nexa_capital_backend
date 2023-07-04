@@ -107,7 +107,6 @@ exports.uploadImg = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
         var file = req.files
-        console.log("===", file)
         var propertyArray = []
 
         file.map((fileName) => {
