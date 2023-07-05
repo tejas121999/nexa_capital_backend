@@ -31,7 +31,6 @@ exports.addProperty = async (req, res) => {
     try {
         const { property } = req.body
         var create_property = await Property.create(property)
-
         if (!create_property) {
             return res.status(404).json({
                 message: "failed to create"
@@ -43,6 +42,7 @@ exports.addProperty = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error
@@ -116,13 +116,16 @@ exports.uploadImg = async (req, res) => {
             }
             propertyArray.push(temp)
         })
-
         var upload_img = await PropertyIMG.bulkCreate(propertyArray)
+
+
         if (upload_img) {
             return res.status(200).json({
                 message: "Image upload success"
             })
-        } else {
+        }
+
+        else {
             return res.status(400).json({
                 message: "failed to upload"
             })
@@ -137,7 +140,27 @@ exports.uploadImg = async (req, res) => {
 
 exports.getPropertyImg = async (req, res) => {
     try {
-        const data = await PropertyIMG.findAll({ where: { prop_id: req.body.prop_id } })
+        var data = await PropertyIMG.findAll(
+            { where: { prop_id: req.body.prop_id } }
+        )
+        console.log("data 123658", data)
+        if (data.length === 0) {
+            data = await PropertyIMG.findAll()
+            function removeDuplicates(array, property) {
+                const uniqueArray = [];
+                const propertySet = new Set();
+                for (const obj of array) {
+                    const value = obj[property];
+                    if (!propertySet.has(value)) {
+                        propertySet.add(value);
+                        uniqueArray.push(obj);
+                    }
+                }
+                return uniqueArray;
+            }
+            data = removeDuplicates(data, "prop_id")
+
+        }
         if (!data) {
             return res.status(404).json({
                 message: "img not found"
@@ -149,6 +172,7 @@ exports.getPropertyImg = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error
