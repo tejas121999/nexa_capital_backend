@@ -103,6 +103,29 @@ exports.deleteProperty = async (req, res) => {
     }
 }
 
+exports.deleteImg = async (req, res) => {
+    const img_id = req.body.id
+    const data = await PropertyIMG.findAll({ where: { id: img_id } })
+    if (!data) {
+        return res.status(404).json({
+            message: "img not found"
+        })
+    } else {
+        PropertyIMG.update({
+            isDelete: true
+        }, {
+            where: {
+                id: img_id
+            }
+        }).then((_) => {
+            res.status(200).send({
+                message: "Delete",
+                // data
+            })
+        })
+    }
+}
+
 exports.uploadImg = async (req, res) => {
     try {
         const id = parseInt(req.params.id)
@@ -143,7 +166,6 @@ exports.getPropertyImg = async (req, res) => {
         var data = await PropertyIMG.findAll(
             { where: { prop_id: req.body.prop_id } }
         )
-        console.log("data 123658", data)
         if (data.length === 0) {
             data = await PropertyIMG.findAll()
             function removeDuplicates(array, property) {
