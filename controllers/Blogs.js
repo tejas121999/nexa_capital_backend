@@ -83,7 +83,6 @@ exports.deleteBlog = async (req, res) => {
                 message: "post not found"
             })
         } else {
-            console.log("blog")
             Bloges.update(blog.isDelete, {
                 where: {
                     id: blog.id
@@ -95,10 +94,8 @@ exports.deleteBlog = async (req, res) => {
             }).catch((error) => {
                 console.log(error)
             })
-
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             message: "Server Error",
             error

@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
             field: 'isDelete',
             defaultValue: false,
         },
+        isDraft:{
+            type: DataTypes.BOOLEAN,
+            field: 'isDraft',
+            defaultValue: false,
+        },
         like: {
             type: DataTypes.STRING,
             field: "like"
