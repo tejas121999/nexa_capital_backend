@@ -1,5 +1,8 @@
 const { Property, PropertyIMG } = require('../models')
-
+const { s3 } = require('../middleware/ImmgUpload')
+const { PutObjectAclCommand } = require("@aws-sdk/client-s3");
+const dotenv = require('dotenv')
+dotenv.config()
 exports.getAllProperty = async (req, res) => {
     try {
         var getAll = await Property.findAndCountAll({
@@ -195,6 +198,33 @@ exports.getPropertyImg = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
+        res.status(500).json({
+            message: "Server Error",
+            error
+        })
+    }
+}
+
+exports.test = async (req, res) => {
+    try {
+        var file = req.file
+        console.log(file)
+        const params = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: file.originalname,
+            Body: file.buffer,
+            ContentType: file.mimetype
+        }
+        console.log(params)
+        const command = new PutObjectAclCommand(params)
+        await s3.send(command).then((_) => {
+            console.log("done")
+        }).catch((error) => {
+            console.log(error)
+        })
+
+    } catch (error) {
+
         res.status(500).json({
             message: "Server Error",
             error

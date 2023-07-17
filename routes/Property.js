@@ -3,6 +3,7 @@ const router = express.Router()
 const propertyControler = require('../controllers/Property')
 const verify = require("../middleware/JWT")
 const property_img = require('../middleware/PropertyIMG')
+const testUploade = require('../middleware/ImmgUpload')
 
 router.post('/getAll', propertyControler.getAllProperty)
 router.post('/add', verify.validateToken, propertyControler.addProperty)
@@ -15,5 +16,6 @@ router.post('/upload/:id',
 )
 router.post('/getImg', propertyControler.getPropertyImg)
 router.post('/deleteimg', verify.validateToken, propertyControler.deleteImg)
+router.post('/test', verify.validateToken, testUploade.upload.single('test'), propertyControler.test)
 
 module.exports = router
