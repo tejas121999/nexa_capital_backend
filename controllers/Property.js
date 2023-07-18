@@ -1,5 +1,7 @@
 const { Property, PropertyIMG } = require('../models')
-
+const { PutObjectAclCommand, S3Client } = require("@aws-sdk/client-s3");
+const dotenv = require('dotenv')
+dotenv.config()
 exports.getAllProperty = async (req, res) => {
     try {
         var getAll = await Property.findAndCountAll({
@@ -195,6 +197,38 @@ exports.getPropertyImg = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
+        res.status(500).json({
+            message: "Server Error",
+            error
+        })
+    }
+}
+
+exports.test = async (req, res) => {
+    try {
+        var file = req.file
+        const s3 = new S3Client({
+            credentials: {
+                accessKeyId: "AKIAWZMFIPL7QGRTNR5Y",
+                secretAccessKey: "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"
+            },
+            region: "ap-south-1"
+        })
+        const params = {
+            ACL: "public-read",
+            Bucket: "welkins-capital-bucket",
+            Key: file.originalname,
+            Body: file.buffer,
+            ContentType: file.mimetype
+        }
+        const command = new PutObjectAclCommand(params)
+        await s3.send(command).then((res) => {
+            console.log("done", res)
+        }).catch((error) => {
+            console.log(error)
+        })
+
+    } catch (error) {
         res.status(500).json({
             message: "Server Error",
             error
